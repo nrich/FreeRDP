@@ -70,6 +70,7 @@
         <item>Automatic</item>
         <item>Fit Screen</item>
         <item>Custom</item>
+        <item>480x320</item>
         <item>640x480</item>
         <item>720x480</item>
         <item>800x600</item>
@@ -83,6 +84,7 @@
         <item>automatic</item>
         <item>fitscreen</item>
         <item>custom</item>
+        <item>480x320</item>
         <item>640x480</item>
         <item>720x480</item>
         <item>800x600</item>
