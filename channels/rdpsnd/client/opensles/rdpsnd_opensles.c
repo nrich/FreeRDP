@@ -151,7 +151,8 @@ static void rdpsnd_opensles_set_format(rdpsndDevicePlugin* device,
 						break;
 
 					case 16:
-						opensles->format = WAVE_FORMAT_ADPCM;
+						/* opensles->format = WAVE_FORMAT_ADPCM; */
+                                                opensles->format = WAVE_FORMAT_PCM;
 						break;
 				}
 				break;
