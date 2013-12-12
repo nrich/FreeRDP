@@ -192,7 +192,7 @@ public class GestureDetector {
     private int mLargeTouchSlopSquare;
     private int mDoubleTapSlopSquare;
 
-    private int mLongpressTimeout = 100;
+    private int mLongpressTimeout = 30;
     private static final int TAP_TIMEOUT = 100;
     private static final int DOUBLE_TAP_TIMEOUT = 200;
 
