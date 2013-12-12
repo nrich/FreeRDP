@@ -47,6 +47,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
@@ -106,7 +107,7 @@ public class SessionActivity extends Activity
 				}
 				case SEND_MOVE_EVENT:
 				{
-			    	LibFreeRDP.sendCursorEvent(session.getInstance(), msg.arg1, msg.arg2, Mouse.getMoveEvent());		
+			    	LibFreeRDP.sendCursorEvent(session.getInstance(), msg.arg1, msg.arg2, Mouse.getMoveEvent());
 					break;
 				}				
 				case SHOW_DIALOG:
@@ -142,7 +143,7 @@ public class SessionActivity extends Activity
 		    		if (scrollX != 0 || scrollY != 0)
 		        		uiHandler.sendEmptyMessageDelayed(SCROLLING_REQUESTED, SCROLLING_TIMEOUT);
 		    		else
-		    			Log.v(TAG, "Stopping auto-scroll");
+		    			Log.i(TAG, "Stopping auto-scroll");
 		    		break;
 				}
 			}
@@ -152,7 +153,7 @@ public class SessionActivity extends Activity
 	private class PinchZoomListener extends ScaleGestureDetector.SimpleOnScaleGestureListener
 	{
 		private float scaleFactor = 1.0f;
-
+		
 		@Override
 		public boolean onScaleBegin(ScaleGestureDetector detector) {
 			scrollView.setScrollEnabled(false);		
@@ -1081,12 +1082,15 @@ public class SessionActivity extends Activity
 	}
 
 	@Override
-	public void onSessionViewLeftTouch(int x, int y, boolean down) {		
+	public void onSessionViewLeftTouch(int x, int y, boolean down) {
+		Point p = mapScreenCoordToSessionCoord(x, y);
+		
 		if(!down)
 			cancelDelayedMoveEvent();
 
-		LibFreeRDP.sendCursorEvent(session.getInstance(), x, y, toggleMouseButtons ? Mouse.getRightButtonEvent(down) : Mouse.getLeftButtonEvent(down));        			
-
+		LibFreeRDP.sendCursorEvent(session.getInstance(), p.x, p.y, Mouse.getMoveEvent());
+		LibFreeRDP.sendCursorEvent(session.getInstance(), p.x, p.y, toggleMouseButtons ? Mouse.getRightButtonEvent(down) : Mouse.getLeftButtonEvent(down));        					
+		
 		if (!down)
 			toggleMouseButtons = false;
 	}
@@ -1098,12 +1102,12 @@ public class SessionActivity extends Activity
 
 	@Override
 	public void onSessionViewMove(int x, int y) {
-		sendDelayedMoveEvent(x, y);		
+		sendDelayedMoveEvent(x, y);
 	}
 	
 	@Override
-	public void onSessionViewScroll(boolean down) {		
-    	LibFreeRDP.sendCursorEvent(session.getInstance(), 0, 0, Mouse.getScrollEvent(down));        					
+	public void onSessionViewScroll(boolean down) {
+    	LibFreeRDP.sendCursorEvent(session.getInstance(), 0, 0, Mouse.getScrollEvent(down));
 	}
 
 	// ****************************************************************************
